@@ -9,9 +9,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -23,47 +21,18 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     //현재 연결된 세션들
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
-    //chatRoomId : {session1, session2}
-    private final Map<Long,Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
-
 
     //소켓 연결 확인
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session)  {
         log.info("{} 연결됨",session.getId());
         sessions.add(session);
     }
 
     // 소켓 통신 시 메세지의 전송을 다루는 부분
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        log.info("payload {}",payload);
-
-        ChatMessageDto chatMessageDto = mapper.readValue(payload, ChatMessageDto.class);
-        log.info("session {}",chatMessageDto.toString());
-
-        Long chatRoomId = chatMessageDto.getChatRoomId();
-
-        //메모리상에 채팅방에 대한 세션이 없으면 만들어줌
-        if(!chatRoomSessionMap.containsKey(chatRoomId)){
-            chatRoomSessionMap.put(chatRoomId,new HashSet<>());
-        }
-
-        Set<WebSocketSession> chatRoomSession = chatRoomSessionMap.get(chatRoomId);
-
-        // message 에 담긴 타입을 확인한다.
-        // 이때 message 에서 getType 으로 가져온 내용이
-        // ChatDTO 의 열거형인 MessageType 안에 있는 ENTER 과 동일한 값이라면
-        if(chatMessageDto.getMessageType().equals(ChatMessageDto.MessageType.ENTER)){
-            chatRoomSession.add(session);
-        }
-
-        if(chatRoomSession.size()>=3){
-            //
-            chatRoomSession.removeIf(sess -> !sessions.contains(sess));
-        }
-        sendMessageToChatRoom(chatMessageDto,chatRoomSession);
+    protected void handleTextMessage(WebSocketSession session, TextMessage message)  {
+          log.info("payload {}",message.getPayload());
 
     }
 
