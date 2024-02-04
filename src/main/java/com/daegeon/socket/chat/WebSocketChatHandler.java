@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,20 +31,20 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     // 소켓 통신 시 메세지의 전송을 다루는 부분
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message)  {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws  Exception {
           log.info("payload {}",message.getPayload());
 
+
+          for(WebSocketSession sess: sessions){
+            sess.sendMessage(message);
+          }
     }
 
-    private void sendMessageToChatRoom(ChatMessageDto chatMessageDto, Set<WebSocketSession> chatRoomSession){
-        chatRoomSession.parallelStream().forEach(sess -> sendMessage(sess,chatMessageDto));
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        log.info(session + " 클라이언트 접속 해제");
+        sessions.remove(session);
     }
 
-    public  <T> void sendMessage(WebSocketSession session,T message){
-        try {
-            session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
-        }catch (IOException e){
-            log.error(e.getMessage(),e);
-        }
-    }
+
 }
