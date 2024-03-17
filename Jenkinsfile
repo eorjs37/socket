@@ -9,6 +9,17 @@ pipeline {
                 '''
             }
         }
+        stage('ssh server'){
+            steps{
+                sshagent(credentials: ['aws-server']){
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@15.165.120.8 '
+                        ls -al
+                        '
+                    """
+                }
+            }
+        }
         stage('test') {
             steps {
                 echo 'testing the application...'
