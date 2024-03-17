@@ -8,7 +8,10 @@ pipeline {
         }
         stage('test') {
             steps {
-                echo 'testing the application...'
+                bat '''
+                    echo 'start bootJar'
+                    ./gradlew clean bootJar
+                    '''
             }
         }
         stage('deploy') {
