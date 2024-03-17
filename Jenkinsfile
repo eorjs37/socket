@@ -3,9 +3,9 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                echo 'build'
-                chmod +x gradlew
-                ./gradlew clean build
+                sh '''
+                    echo 'build'
+                '''
             }
         }
         stage('test') {
