@@ -3,15 +3,15 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                echo 'building the application...'
+                sh ```
+                    echo 'build'
+                    ./gradlew clean bootJar
+                ```
             }
         }
         stage('test') {
             steps {
-                bat '''
-                    echo 'start bootJar'
-                    ./gradlew clean bootJar
-                    '''
+                echo 'testing the application...'
             }
         }
         stage('deploy') {
