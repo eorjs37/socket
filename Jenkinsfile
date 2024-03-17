@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh '''
                     echo 'build'
+                    ./gradlew clean bootJar
                 '''
             }
         }
