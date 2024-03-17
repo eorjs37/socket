@@ -15,6 +15,7 @@ pipeline {
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@15.165.120.8 '
                         ls -al
+                        cat linux.txt
                         '
                     """
                 }
