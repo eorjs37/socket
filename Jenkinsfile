@@ -7,15 +7,15 @@ pipeline {
     }
     agent any
     stages {
-//        stage('build') {
-//            steps {
-//                sh '''
-//                    echo 'build'
-//                    ./gradlew clean bootJar
-//                '''
-//            }
-//        }
-        stage{
+        stage('build') {
+            steps {
+                sh '''
+                    echo 'build'
+                    ./gradlew clean bootJar
+                '''
+            }
+        }
+        stage('Building our image'){
             steps{
                 script{
                     dockerImage = docker.build repository + ":$BUILD_NUMBER"
