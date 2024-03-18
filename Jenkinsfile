@@ -1,12 +1,25 @@
 pipeline {
+    environment{
+        repository ="eorjs37/socket"
+        DOCKERHUB_CREDENTIALS = credentials('jenkins')
+        dockerImage = ''
+        BUILD_NUMBER ='1.0'
+    }
     agent any
     stages {
-        stage('build') {
-            steps {
-                sh '''
-                    echo 'build'
-                    ./gradlew clean bootJar
-                '''
+//        stage('build') {
+//            steps {
+//                sh '''
+//                    echo 'build'
+//                    ./gradlew clean bootJar
+//                '''
+//            }
+//        }
+        stage{
+            steps{
+                script{
+                    dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                }
             }
         }
         stage('ssh server'){
@@ -19,16 +32,6 @@ pipeline {
                         '
                     """
                 }
-            }
-        }
-        stage('test') {
-            steps {
-                echo 'testing the application...'
-            }
-        }
-        stage('deploy') {
-            steps {
-                echo 'deploying the application...'
             }
         }
     }
