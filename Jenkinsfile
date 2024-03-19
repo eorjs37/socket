@@ -1,7 +1,7 @@
 pipeline {
     environment{
         repository ="eorjs37/socket"
-        DOCKERHUB_CREDENTIALS = credentials('jenkins')
+        DOCKERHUB_CREDENTIALS = credentials('jenkins-docker')
         dockerImage = ''
         BUILD_NUMBER ='0.1'
     }
@@ -26,7 +26,7 @@ pipeline {
             steps{
                 echo "Push Docker"
                 script{
-                    docker.withRegistry('https://registry.hub.docker.com',DOCKERHUB_CREDENTIALS){
+                    docker.withRegistry('',DOCKERHUB_CREDENTIALS){
                         dockerImage.push("1.0")
                     }
                 }
