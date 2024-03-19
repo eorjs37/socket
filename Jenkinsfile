@@ -27,7 +27,7 @@ pipeline {
                 echo "Push Docker"
                 script{
                     docker.withRegistry('',DOCKERHUB_CREDENTIALS){
-                        dockerImage.push("1.0")
+                        dockerImage.push("0.1")
                     }
                 }
             }
