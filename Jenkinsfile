@@ -3,7 +3,7 @@ pipeline {
         repository ="eorjs37/socket"
         DOCKERHUB_CREDENTIALS = credentials('jenkins')
         dockerImage = ''
-        BUILD_NUMBER ='1.0'
+        BUILD_NUMBER ='0.1'
     }
     agent any
     stages {
@@ -26,7 +26,7 @@ pipeline {
             steps{
                 echo "Push Docker"
                 script{
-                    docker.withRegistry('',DOCKERHUB_CREDENTIALS){
+                    docker.withRegistry('https://registry.hub.docker.com',DOCKERHUB_CREDENTIALS){
                         dockerImage.push("1.0")
                     }
                 }
