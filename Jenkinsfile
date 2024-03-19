@@ -1,7 +1,7 @@
 pipeline {
     environment{
         repository ="eorjs37/socket"
-        DOCKERHUB_CREDENTIALS = credentials('jenkins-docker')
+        DOCKERHUB_CREDENTIALS = 'jenkins-docker'
         dockerImage = ''
         BUILD_NUMBER ='0.1'
     }
