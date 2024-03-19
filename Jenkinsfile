@@ -22,6 +22,15 @@ pipeline {
                 }
             }
         }
+        stage('Building our image'){
+            steps{
+                script{
+                    docker.withRegistry('',DOCKERHUB_CREDENTIALS){
+                        dockerImage.push("1.0")
+                    }
+                }
+            }
+        }
         stage('ssh server'){
             steps{
                 sshagent(credentials: ['aws-server']){
