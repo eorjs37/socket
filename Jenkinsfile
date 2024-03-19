@@ -22,8 +22,9 @@ pipeline {
                 }
             }
         }
-        stage('Building our image'){
+        stage('push our image'){
             steps{
+                echo "Push Docker"
                 script{
                     docker.withRegistry('',DOCKERHUB_CREDENTIALS){
                         dockerImage.push("1.0")
