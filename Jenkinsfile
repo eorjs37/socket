@@ -38,6 +38,8 @@ pipeline {
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@15.165.120.8 '
                         docker ps
+                        docker pull eorjs37/socket:0.1
+                        docker images
                         '
                     """
                 }
