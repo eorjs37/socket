@@ -11,7 +11,7 @@ import org.springframework.web.util.HtmlUtils;
 @Controller
 @Slf4j
 public class GreetingController {
-    @MessageMapping(value = "/hello")
+    @MessageMapping(value = "/api/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws  Exception{
         Thread.sleep(3000);
